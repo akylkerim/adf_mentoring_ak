@@ -1,0 +1,73 @@
+{
+	"name": "FileSourceForCopy_Module_9",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"source_file_name": {
+				"type": "string"
+			},
+			"source_container": {
+				"type": "string"
+			},
+			"source_folder": {
+				"type": "string"
+			},
+			"source_file_delimiter": {
+				"type": "string"
+			},
+			"source_file_encoding": {
+				"type": "string"
+			},
+			"source_file_escape_char": {
+				"type": "string"
+			},
+			"source_file_quote_char": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "module_9"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().source_file_name",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().source_folder",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().source_container",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": {
+				"value": "@dataset().source_file_delimiter",
+				"type": "Expression"
+			},
+			"encodingName": {
+				"value": "@dataset().source_file_encoding",
+				"type": "Expression"
+			},
+			"escapeChar": {
+				"value": "@dataset().source_file_escape_char",
+				"type": "Expression"
+			},
+			"firstRowAsHeader": true,
+			"quoteChar": {
+				"value": "@dataset().source_file_quote_char",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,16 @@
+{
+	"name": "SQL_Source_Mapping_Module_9",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabaseMovie",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "module_9"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

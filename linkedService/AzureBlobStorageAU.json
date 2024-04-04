@@ -1,0 +1,19 @@
+{
+	"name": "AzureBlobStorageAU",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"sasUri": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AzureKeyVault1",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "rating-storage-au-sas-url",
+				"secretVersion": "6d373655e7c04641bf27cd3c8b3690ef"
+			}
+		}
+	}
+}

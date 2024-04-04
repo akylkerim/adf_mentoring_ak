@@ -1,0 +1,23 @@
+{
+	"name": "metric_pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Fail1",
+				"type": "Fail",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"message": "testing metrics",
+					"errorCode": "400"
+				}
+			}
+		],
+		"folder": {
+			"name": "module_10"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-04-04T08:13:42Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

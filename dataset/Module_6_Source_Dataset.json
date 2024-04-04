@@ -1,0 +1,28 @@
+{
+	"name": "Module_6_Source_Dataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CinemaTicketsSQLServer",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "table_name",
+				"type": "varchar"
+			},
+			{
+				"name": "watermark",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "watermark_table"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

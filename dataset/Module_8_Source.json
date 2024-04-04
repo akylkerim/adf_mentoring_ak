@@ -1,0 +1,13 @@
+{
+	"name": "Module_8_Source",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabaseMovie",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

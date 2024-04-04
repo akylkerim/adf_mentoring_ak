@@ -1,0 +1,191 @@
+{
+	"name": "pipeline2",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get Metadata Files",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "FileSource_Module_9",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "JsonReadSettings"
+					}
+				}
+			},
+			{
+				"name": "ForEach",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata Files",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Metadata Files').output.childItems",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Lookup Metadata",
+							"type": "Lookup",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "SELECT *,\n(\n    SELECT 'TabularTranslator' AS [type],\n       (\n            SELECT it.source_field AS 'source.name',\n                   it.target_field AS 'target.name'\n            FROM etl.tControlMapping it\n            WHERE it.source_file_name = ot.source_file_name\n            FOR JSON PATH\n        ) AS map\nFOR JSON PATH, WITHOUT_ARRAY_WRAPPER\n) as mappings\nFROM etl.tControlMetadata ot\nWHERE '@{item().name}' like replace(ot.source_file_name, '*', '%')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "SQL_Source_Mapping_Module_9",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Copy data",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Lookup Metadata",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"preCopyScript": {
+										"value": "@concat('truncate table ', activity('Lookup Metadata').output.firstRow.dest_schema_name, '.', activity('Lookup Metadata').output.firstRow.dest_table_name)",
+										"type": "Expression"
+									},
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"value": "@activity('Lookup Metadata').output.firstRow.map",
+									"type": "Expression"
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "FileSourceForCopy_Module_9",
+									"type": "DatasetReference",
+									"parameters": {
+										"source_file_name": {
+											"value": "@item().name",
+											"type": "Expression"
+										},
+										"source_container": {
+											"value": "@activity('Lookup Metadata').output.firstRow.source_container",
+											"type": "Expression"
+										},
+										"source_folder": {
+											"value": "@activity('Lookup Metadata').output.firstRow.source_folder",
+											"type": "Expression"
+										},
+										"source_file_delimiter": {
+											"value": "@activity('Lookup Metadata').output.firstRow.source_file_delimiter",
+											"type": "Expression"
+										},
+										"source_file_encoding": {
+											"value": "@activity('Lookup Metadata').output.firstRow.source_file_encoding",
+											"type": "Expression"
+										},
+										"source_file_escape_char": {
+											"value": "@activity('Lookup Metadata').output.firstRow.source_file_escape_char",
+											"type": "Expression"
+										},
+										"source_file_quote_char": {
+											"value": "@activity('Lookup Metadata').output.firstRow.source_file_quote_char",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "SQL_Sink_Table",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema_name": {
+											"value": "@activity('Lookup Metadata').output.firstRow.dest_schema_name",
+											"type": "Expression"
+										},
+										"table_name": {
+											"value": "@activity('Lookup Metadata').output.firstRow.dest_table_name",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"folder": {
+			"name": "module_9"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-03-27T13:20:53Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
