@@ -13,6 +13,25 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/SQL_Source_Mapping_Module_9')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabaseMovie",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "module_9"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SourceCSV')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1937,7 +1956,9 @@
 				"annotations": [],
 				"lastPublishTime": "2024-03-27T13:20:53Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SQL_Source_Mapping_Module_9')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Execute')]",
