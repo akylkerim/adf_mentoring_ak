@@ -1,0 +1,36 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "mentoring-adf-akylk"
+		},
+		"CinemaTicketsSQLServer_connectionString": {
+			"value": "Integrated Security=False;Data Source=AIFER;Initial Catalog=CinemaTickets;User ID=sa"
+		},
+		"AzureBlobStorage1_properties_typeProperties_sasUri_secretName": {
+			"value": "movie-storage-sas-uri"
+		},
+		"AzureBlobStorageAU_properties_typeProperties_sasUri_secretName": {
+			"value": "rating-storage-au-sas-url"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://azurementoringdatalakeay.dfs.core.windows.net/"
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"value": "https://mentoring-key-vault-ay.vault.azure.net/"
+		},
+		"AzureSqlDatabaseMovie_properties_typeProperties_connectionString_secretName": {
+			"value": "sql-connection-string-for-etl"
+		},
+		"DataMartDataBase_properties_typeProperties_connectionString_secretName": {
+			"value": "sql-connection-string-datamart"
+		},
+		"OnlineStorageReadOnly_properties_typeProperties_sasUri_secretName": {
+			"value": "online-sas"
+		},
+		"SqlServer1_properties_typeProperties_connectionString_secretName": {
+			"value": "sql-connection-string-for-etl"
+		}
+	}
+}
